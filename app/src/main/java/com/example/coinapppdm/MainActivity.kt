@@ -18,6 +18,13 @@ import com.example.coinapppdm.ui.articles.CoinListView
 import com.example.coinapppdm.ui.theme.CoinAppPdmTheme
 import com.example.coinapppdm.ui.articles.CoinListViewModel
 import androidx.compose.runtime.getValue
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
+import com.google.firebase.Firebase
+import com.example.coinapppdm.ui.auth.LoginViewModel
+import com.example.coinapppdm.ui.auth.LoginView
+
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,8 +37,13 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(
                         navController = navController,
-                        startDestination = "list"
+                        startDestination = "login"
                     ) {
+                        composable ("login"){
+                            LoginView(
+                                navController = navController
+                            )
+                        }
                         composable("list") {
                             CoinListView(navController = navController)
                         }

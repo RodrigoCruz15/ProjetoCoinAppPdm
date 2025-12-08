@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1037264619650",
+    "project_id": "coinapp-f0246f35",
+    "storage_bucket": "coinapp-f0246f35.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1037264619650:android:7acddcf6d7f87b18b70c9b",
+        "android_client_info": {
+          "package_name": "com.example.coinapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDViCsYKQclfo4mJjcNx8uxUIfpj_pmt9o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
