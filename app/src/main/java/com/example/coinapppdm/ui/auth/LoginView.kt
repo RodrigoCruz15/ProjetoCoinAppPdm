@@ -21,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.coinapppdm.ui.theme.CoinAppPdmTheme
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.material3.TextButton
 
 
 
@@ -55,6 +56,12 @@ fun LoginView(
             visualTransformation = PasswordVisualTransformation(), // 💡 Oculta o texto
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password) // ,
             )
+        TextButton(onClick = {
+            // Navegar para o ecrã de registo
+            navController.navigate("signUp")
+        }) {
+            Text("Não tem conta? Registe-se.")
+        }
 
         if (uiState.error != null) {
             Text(
@@ -67,7 +74,7 @@ fun LoginView(
             modifier = Modifier.padding(8.dp),
             onClick = {
                 viewModel.login(){
-                    navController.navigate("home")
+                    navController.navigate("list")
                 }
             }){
             Text("Login")

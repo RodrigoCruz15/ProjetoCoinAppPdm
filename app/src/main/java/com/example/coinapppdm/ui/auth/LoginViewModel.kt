@@ -71,6 +71,48 @@ class LoginViewModel : ViewModel() {
                 }
             }
     }
+    fun signUp(onSignUpSuccess: () -> Unit) {
+        uiState.value = uiState.value.copy(isLoading = true)
+
+        // Validações (Repetir as validações de email/password)
+        if (uiState.value.email.isNullOrEmpty() || uiState.value.password.isNullOrEmpty()) {
+            uiState.value = uiState.value.copy(
+                isLoading = false,
+                error = "Email e Password são obrigatórios.")
+            return
+        }
+
+        // Chamada à API para criar o utilizador
+        auth.createUserWithEmailAndPassword(
+            uiState.value.email!!,
+            uiState.value.password!!)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // SUCESSO: Conta criada e autenticada
+                    Log.d(TAG, "createUserWithEmail:success")
+                    uiState.value = uiState.value.copy(isLoading = false, error = null)
+                    onSignUpSuccess() // Navega para a lista principal
+                } else {
+                    // FALHA: Erro de email já em uso, password fraca, etc.
+                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
+
+                    // Tratamento específico de erros (adaptar ao seu bloco when já existente)
+                    val errorMessage = when (task.exception) {
+                        is com.google.firebase.auth.FirebaseAuthWeakPasswordException ->
+                            "A password deve ter 6 ou mais caracteres."
+                        is com.google.firebase.auth.FirebaseAuthUserCollisionException ->
+                            "Este email já está registado."
+                        else ->
+                            "Registo falhou. Tente novamente."
+                    }
+
+                    uiState.value = uiState.value.copy(
+                        isLoading = false,
+                        error = errorMessage
+                    )
+                }
+            }
+    }
 
 }
 
