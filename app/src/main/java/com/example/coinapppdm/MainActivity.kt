@@ -18,6 +18,13 @@ import com.example.coinapppdm.ui.articles.CoinListView
 import com.example.coinapppdm.ui.theme.CoinAppPdmTheme
 import com.example.coinapppdm.ui.articles.CoinListViewModel
 import androidx.compose.runtime.getValue
+//import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
+import com.google.firebase.Firebase
+//import com.example.coinapppdm.ui.auth.LoginViewModel
+import com.example.coinapppdm.ui.auth.LoginView
+
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,11 +34,18 @@ class MainActivity : ComponentActivity() {
                 Surface(color = MaterialTheme.colorScheme.background) {
 
                     val navController = rememberNavController()
+                    val auth = Firebase.auth
+                    val startDestination = if (auth.currentUser != null) "list" else "login"
 
                     NavHost(
                         navController = navController,
-                        startDestination = "list"
+                        startDestination = startDestination
                     ) {
+                        composable ("login"){
+                            LoginView(
+                                navController = navController
+                            )
+                        }
                         composable("list") {
                             CoinListView(navController = navController)
                         }
@@ -46,7 +60,6 @@ class MainActivity : ComponentActivity() {
                         ) { backStackEntry ->
                             val id = backStackEntry.arguments?.getString("id") ?: return@composable
 
-                            // 🔹 Usar o MESMO ViewModel da screen "list"
                             val parentEntry = remember(backStackEntry) {
                                 navController.getBackStackEntry("list")
                             }
