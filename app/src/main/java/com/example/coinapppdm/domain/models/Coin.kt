@@ -1,4 +1,4 @@
-package com.example.coinapppdm.models
+package com.example.coinapppdm.domain.models
 
 import org.json.JSONObject
 import java.net.URLEncoder

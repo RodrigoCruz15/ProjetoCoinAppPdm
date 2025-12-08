@@ -2,7 +2,7 @@ package com.example.coinapppdm.ui.articles
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.coinapppdm.models.Coin
+import com.example.coinapppdm.domain.models.Coin
 import androidx.compose.runtime.State
 import okhttp3.Call
 import okhttp3.Callback
@@ -10,7 +10,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import org.json.JSONArray
-import org.json.JSONObject
 import java.io.IOException
 
 data class CoinListState(

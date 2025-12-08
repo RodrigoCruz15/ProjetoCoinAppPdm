@@ -1,5 +1,5 @@
 package com.example.coinapppdm.ui.articles
-import com.example.coinapppdm.models.Coin
+import com.example.coinapppdm.domain.models.Coin
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape

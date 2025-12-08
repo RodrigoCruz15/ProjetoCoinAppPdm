@@ -24,7 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import coil.compose.AsyncImage
-import com.example.coinapppdm.models.Coin
+import com.example.coinapppdm.domain.models.Coin
 
 @Composable
 fun CoinDetailView(coin: Coin) {

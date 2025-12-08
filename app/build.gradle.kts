@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.devtools.ksp)
+
 }
 
 android {
@@ -53,6 +55,11 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.7.0")
     implementation("androidx.compose.ui:ui-text")
     implementation("androidx.compose.ui:ui")
+
+    //Android Room
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1") // Para Coroutines e Flow
+    ksp("androidx.room:room-compiler:2.6.1") // Usamos KSP em vez de kapt
 
 
     implementation(libs.androidx.core.ktx)
