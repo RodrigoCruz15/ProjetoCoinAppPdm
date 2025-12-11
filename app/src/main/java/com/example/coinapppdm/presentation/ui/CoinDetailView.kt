@@ -1,4 +1,4 @@
-package com.example.coinapppdm.ui.articles
+package com.example.coinapppdm.presentation.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -24,7 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import coil.compose.AsyncImage
-import com.example.coinapppdm.domain.models.Coin
+import com.example.coinapppdm.domain.model.Coin
 
 @Composable
 fun CoinDetailView(coin: Coin) {

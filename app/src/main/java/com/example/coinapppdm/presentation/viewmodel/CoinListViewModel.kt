@@ -1,8 +1,8 @@
-package com.example.coinapppdm.ui.articles
+package com.example.coinapppdm.presentation.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.coinapppdm.domain.models.Coin
+import com.example.coinapppdm.domain.model.Coin
 import androidx.compose.runtime.State
 import okhttp3.Call
 import okhttp3.Callback

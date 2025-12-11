@@ -1,4 +1,4 @@
-package com.example.coinapppdm.ui.articles
+package com.example.coinapppdm.presentation.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.coinapppdm.presentation.viewmodel.CoinListState
+import com.example.coinapppdm.presentation.viewmodel.CoinListViewModel
 
 @Composable
 fun CoinListView(
