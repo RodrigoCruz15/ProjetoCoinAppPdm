@@ -3,7 +3,6 @@ package com.example.coinapppdm.data.local.dao
 import com.example.coinapppdm.data.local.entity.FavoriteCoinEntity
 import androidx.room.Dao
 import androidx.room.Query
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 
