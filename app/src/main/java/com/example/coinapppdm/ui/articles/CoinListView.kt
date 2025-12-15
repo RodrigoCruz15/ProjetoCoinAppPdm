@@ -19,21 +19,25 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextAlign
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.coinapppdm.ui.viewModel.CoinListState
+import com.example.coinapppdm.ui.viewModel.CoinListViewModel
+import com.example.coinapppdm.ui.viewModel.FavoritesViewModel
 
 @Composable
 fun CoinListView(
     modifier: Modifier = Modifier,
     navController : NavController,
-    source: String = ""
+    favoritesViewModel: FavoritesViewModel,
+    viewModel: CoinListViewModel
 
 ){
-    val viewModel : CoinListViewModel = viewModel()
     val uiState by viewModel.uiState
 
     CoinListViewContent(
         modifier = modifier,
         uiState = uiState,
-        navController = navController
+        navController = navController,
+        favoritesViewModel = favoritesViewModel
     )
 
     LaunchedEffect(Unit) {
@@ -45,8 +49,12 @@ fun CoinListView(
 fun CoinListViewContent(
     modifier: Modifier = Modifier,
     uiState: CoinListState,
-    navController: NavController
+    navController: NavController,
+    favoritesViewModel: FavoritesViewModel
 ){
+
+    val favoriteIds = favoritesViewModel.favoriteIds
+
     Box(modifier = modifier
         .fillMaxSize()
         .padding(16.dp)
@@ -76,11 +84,14 @@ fun CoinListViewContent(
                     itemsIndexed(
                         items = uiState.coins,
                     ) { index, coin ->
+                        val isFav = favoriteIds.contains(coin.id)
                         CoinListCell(
                             coin = coin,
+                            isFavorite = isFav,
                             onClick = {
                                 navController.navigate("coin/${coin.id}")
-                            }
+                            },
+                            onToggleFavorite = { favoritesViewModel.toggleFavorite(coin) }
                         )
                     }
                 }
