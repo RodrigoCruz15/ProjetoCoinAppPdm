@@ -1,21 +1,12 @@
 package com.example.coinapppdm.presentation.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,8 +14,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.coinapppdm.domain.model.Coin
+import com.example.coinapppdm.presentation.viewmodel.CoinDetailViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun CoinDetailView(coin: Coin) {
@@ -33,6 +27,14 @@ fun CoinDetailView(coin: Coin) {
     val changeFormatted = "%.2f %%".format(coin.priceChangePercentage24h)
     val isPositive = coin.priceChangePercentage24h >= 0
     val changeColor = if (isPositive) Color(0xFF2E7D32) else Color(0xFFC62828)
+
+    val viewModel : CoinDetailViewModel = hiltViewModel()
+    val uiState = viewModel.uiState
+
+    LaunchedEffect(key1 = coin.id) {
+        viewModel.loadNote(coin.id)
+    }
+
 
     Column(
         modifier = Modifier
@@ -114,6 +116,40 @@ fun CoinDetailView(coin: Coin) {
                     fontWeight = FontWeight.Medium,
                     color = changeColor
                 )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                OutlinedTextField(
+                    value = uiState.note,
+                    onValueChange = { viewModel.onNoteChange(it)},
+                    label = {Text("Nota sobre esta moeda")},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 120.dp)
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                Button(
+                    onClick = { viewModel.saveNote(coin.id)},
+                    modifier = Modifier.fillMaxWidth()
+                ){
+                    Text("Guardar nota")
+                }
+
+                uiState.error?.let {
+                    Text(
+                        text = "Erro: $it",
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+
+                if(uiState.saved){
+                    Text(
+                        text = "Nota guardada",
+                        color = Color(0xFF2E7D32)
+                    )
+                }
             }
         }
     }

@@ -67,6 +67,7 @@ dependencies {
     //Hilt
     implementation(libs.hilt.android)
     ksp("com.google.dagger:hilt-compiler:2.50")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0") // ⬅️ Adicionar esta linha
 
     
     implementation(libs.androidx.core.ktx)
