@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.devtools.ksp)
+    alias(libs.plugins.daggerHiltAndroid)
 }
 
 android {
@@ -46,7 +48,7 @@ dependencies {
     // ---- Compose e Navegação ----
     implementation(platform("com.google.firebase:firebase-bom:34.6.0"))
     implementation("com.google.firebase:firebase-auth")
-    implementation("com.google.firebase:firebase-firestore") // já está correto em libs
+    implementation("com.google.firebase:firebase-firestore")
 
     implementation("androidx.navigation:navigation-compose:2.9.6")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
@@ -54,7 +56,20 @@ dependencies {
     implementation("androidx.compose.ui:ui-text")
     implementation("androidx.compose.ui:ui")
 
+    //Android Room
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1") // Para Coroutines e Flow
+    ksp("androidx.room:room-compiler:2.6.1") // Usamos KSP em vez de kapt
 
+    //Inject
+    implementation("javax.inject:javax.inject:1")
+
+    //Hilt
+    implementation(libs.hilt.android)
+    ksp("com.google.dagger:hilt-compiler:2.50")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0") // ⬅️ Adicionar esta linha
+
+    
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

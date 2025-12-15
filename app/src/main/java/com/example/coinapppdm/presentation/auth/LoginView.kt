@@ -1,4 +1,4 @@
-package com.example.coinapppdm.ui.auth
+package com.example.coinapppdm.presentation.auth
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,11 +18,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.coinapppdm.ui.theme.CoinAppPdmTheme
+import com.example.coinapppdm.presentation.theme.CoinAppPdmTheme
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.material3.TextButton
-
+import com.example.coinapppdm.presentation.viewmodel.LoginViewModel
 
 
 @Composable

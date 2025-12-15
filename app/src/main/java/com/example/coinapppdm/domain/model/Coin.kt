@@ -1,14 +1,14 @@
-package com.example.coinapppdm.models
+package com.example.coinapppdm.domain.model
 
 import org.json.JSONObject
 import java.net.URLEncoder
 import java.net.URLDecoder
 
 data class Coin (
-    val id: String? = null,
-    val symbol: String? = null,
+    val id: String,
+    val symbol: String,
     val name: String,
-    val image: String? = null,
+    val image: String,
     val currentPrice: Double = 0.0,
     val priceChangePercentage24h: Double = 0.0,
 ){

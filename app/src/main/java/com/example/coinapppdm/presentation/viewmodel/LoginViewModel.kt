@@ -1,10 +1,12 @@
-package com.example.coinapppdm.ui.auth
+package com.example.coinapppdm.presentation.viewmodel
 
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.auth
 
 data class LoginState (
@@ -98,9 +100,9 @@ class LoginViewModel : ViewModel() {
 
                     // Tratamento específico de erros (adaptar ao seu bloco when já existente)
                     val errorMessage = when (task.exception) {
-                        is com.google.firebase.auth.FirebaseAuthWeakPasswordException ->
+                        is FirebaseAuthWeakPasswordException ->
                             "A password deve ter 6 ou mais caracteres."
-                        is com.google.firebase.auth.FirebaseAuthUserCollisionException ->
+                        is FirebaseAuthUserCollisionException ->
                             "Este email já está registado."
                         else ->
                             "Registo falhou. Tente novamente."

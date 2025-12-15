@@ -13,19 +13,20 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.coinapppdm.ui.articles.CoinDetailView
-import com.example.coinapppdm.ui.articles.CoinListView
-import com.example.coinapppdm.ui.theme.CoinAppPdmTheme
-import com.example.coinapppdm.ui.articles.CoinListViewModel
+import com.example.coinapppdm.presentation.ui.CoinDetailView
+import com.example.coinapppdm.presentation.ui.CoinListView
+import com.example.coinapppdm.presentation.theme.CoinAppPdmTheme
+import com.example.coinapppdm.presentation.viewmodel.CoinListViewModel
 import androidx.compose.runtime.getValue
 //import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.Firebase
 //import com.example.coinapppdm.ui.auth.LoginViewModel
-import com.example.coinapppdm.ui.auth.LoginView
+import dagger.hilt.android.AndroidEntryPoint
+import com.example.coinapppdm.presentation.auth.LoginView
 
 
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
