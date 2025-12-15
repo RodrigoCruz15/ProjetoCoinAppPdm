@@ -16,6 +16,9 @@ import com.example.coinapppdm.ui.theme.CoinAppPdmTheme
 import com.example.coinapppdm.ui.viewModel.CoinListViewModel
 import com.example.coinapppdm.ui.viewModel.FavoritesViewModel
 import com.example.coinapppdm.data.local.repository.FavoritesRepository
+import com.example.coinapppdm.data.remote.repository.CoinRepositoryImpl
+import com.example.coinapppdm.data.remote.repository.NotesRepository
+import com.example.coinapppdm.ui.viewModel.NotesViewModel
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 
@@ -28,24 +31,25 @@ class MainActivity : ComponentActivity() {
             val context = LocalContext.current
             val db = remember { AppDatabase.getInstance(context) }
 
-            // Repositórios / ViewModels
-            val favoritesRepository = remember {
-                FavoritesRepository(db.favoriteDao())
-            }
+            // Repositórios
+            val favoritesRepository = remember { FavoritesRepository(db.favoriteDao()) }
+            val coinRepository = remember { CoinRepositoryImpl() }
+            val notesRepository = remember { NotesRepository() }
 
-            val favoritesViewModel = remember {
-                FavoritesViewModel(favoritesRepository)
-            }
+            // ViewModels
+            val favoritesViewModel = remember { FavoritesViewModel(favoritesRepository) }
+            val coinListViewModel = remember { CoinListViewModel(coinRepository) }
+            val notesViewModel = remember { NotesViewModel(notesRepository) }
+
+            // Inicializa favoritos do user logado
             LaunchedEffect(Unit) {
-                favoritesViewModel.initForCurrentUser() // carrega os favoritos do user logado
+                favoritesViewModel.initForCurrentUser()
             }
 
-
-            val coinListViewModel = remember { CoinListViewModel() } // ou injeta repo real se tiveres
             val navController = rememberNavController()
-
             val auth = Firebase.auth
-            val startDestination = if (auth.currentUser != null) "list" else "login"
+            val startDestination = "login"
+                //if (auth.currentUser != null) "list" else "login"
 
             CoinAppPdmTheme {
                 Scaffold(
@@ -72,6 +76,7 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         coinListViewModel = coinListViewModel,
                         favoritesViewModel = favoritesViewModel,
+                        notesViewModel = notesViewModel,
                         startDestination = startDestination,
                         modifier = Modifier.padding(innerPadding)
                     )
@@ -80,3 +85,4 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+

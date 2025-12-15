@@ -13,12 +13,14 @@ import com.example.coinapppdm.ui.auth.LoginView
 import com.example.coinapppdm.ui.viewModel.CoinListViewModel
 import com.example.coinapppdm.ui.viewModel.FavoritesViewModel
 import androidx.compose.ui.Modifier
+import com.example.coinapppdm.ui.viewModel.NotesViewModel
 
 @Composable
 fun AppNavHost(
     navController: NavHostController,
     coinListViewModel: CoinListViewModel,
     favoritesViewModel: FavoritesViewModel,
+    notesViewModel: NotesViewModel,
     startDestination: String,
     modifier: Modifier = Modifier
 ) {
@@ -43,7 +45,11 @@ fun AppNavHost(
             val id = backStackEntry.arguments?.getString("id")
             val coin = coinListViewModel.uiState.value.coins.firstOrNull { it.id == id }
             if (coin != null) {
-                CoinDetailView(coin = coin)
+                CoinDetailView(
+                    coin = coin,
+                    notesViewModel = notesViewModel,
+                    favoritesViewModel = favoritesViewModel
+                )
             } else {
                 Text("Coin não encontrada")
             }

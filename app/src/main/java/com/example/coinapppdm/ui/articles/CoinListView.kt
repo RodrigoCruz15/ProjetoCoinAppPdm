@@ -33,6 +33,10 @@ fun CoinListView(
 ){
     val uiState by viewModel.uiState
 
+    LaunchedEffect(Unit) {
+        viewModel.fetchCoins("eur")
+    }
+
     CoinListViewContent(
         modifier = modifier,
         uiState = uiState,
@@ -40,9 +44,7 @@ fun CoinListView(
         favoritesViewModel = favoritesViewModel
     )
 
-    LaunchedEffect(Unit) {
-        viewModel.fetchCoins("eur")
-    }
+
 }
 
 @Composable

@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
+import java.util.UUID
 
 class NotesRepository(
     private val firestore: FirebaseFirestore = Firebase.firestore,
@@ -14,24 +15,29 @@ class NotesRepository(
 
     private val userId get() = auth.currentUser?.uid ?: ""
 
+    private fun notesCollection() = firestore
+        .collection("users")
+        .document(userId)
+        .collection("notes")
+
     suspend fun addNote(coinId: String, content: String) {
         if (userId.isEmpty()) return
 
-        val note = hashMapOf(
-            "userId" to userId,
-            "coinId" to coinId,
-            "content" to content,
-            "timestamp" to System.currentTimeMillis()
+        val note = Note(
+            id = UUID.randomUUID().toString(),
+            coinId = coinId,
+            content = content,
+            userId = userId,
+            timestamp = System.currentTimeMillis()
         )
 
-        firestore.collection("notes").add(note).await()
+        notesCollection().document(note.id).set(note).await()
     }
 
     suspend fun getNotesForCoin(coinId: String): List<Note> {
         if (userId.isEmpty()) return emptyList()
 
-        val snapshot = firestore.collection("notes")
-            .whereEqualTo("userId", userId)
+        val snapshot = notesCollection()
             .whereEqualTo("coinId", coinId)
             .get()
             .await()
@@ -48,6 +54,8 @@ class NotesRepository(
     }
 
     suspend fun deleteNote(noteId: String) {
-        firestore.collection("notes").document(noteId).delete().await()
+        if (userId.isEmpty()) return
+        notesCollection().document(noteId).delete().await()
     }
 }
+
