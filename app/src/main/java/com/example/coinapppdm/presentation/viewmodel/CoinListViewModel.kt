@@ -1,16 +1,14 @@
 package com.example.coinapppdm.presentation.viewmodel
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.coinapppdm.domain.model.Coin
-import androidx.compose.runtime.State
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import org.json.JSONArray
-import java.io.IOException
+import com.example.coinapppdm.data.repository.CoinRepository // 🔑 Novo Import
+import dagger.hilt.android.lifecycle.HiltViewModel // 🔑 Novo Import
+import kotlinx.coroutines.launch
+import javax.inject.Inject // 🔑 Novo Import
 
 data class CoinListState(
     val coins : List<Coin> = emptyList(),
@@ -18,78 +16,41 @@ data class CoinListState(
     val error: String? = null
 )
 
+@HiltViewModel // 🔑 HILT: Torna o ViewModel injetável
+class CoinListViewModel @Inject constructor(
+    // 🔑 HILT: Recebe o Repositório injetado
+    private val repository: CoinRepository
+): ViewModel() {
 
-class CoinListViewModel: ViewModel() {
-
-    private val _uiState = mutableStateOf(
-        CoinListState(
-            isLoading = false,
-            error = null,
-            coins = emptyList()
-        )
-    )
+    private val _uiState = mutableStateOf(CoinListState())
     val uiState: State<CoinListState> = _uiState
 
+    init {
+        // Carrega automaticamente ao criar o ViewModel
+        fetchCoins()
+    }
+
+    // 🔑 MUDANÇA CRÍTICA: Usa Coroutines para chamar a função suspensa
     fun fetchCoins(vsCurrency: String = "eur"){
+        viewModelScope.launch {
+            _uiState.value = uiState.value.copy(isLoading = true, error = null)
 
-        _uiState.value = uiState.value.copy(isLoading = true, error = null)
+            try {
+                // 🔑 O Repositório faz o trabalho pesado
+                val coins = repository.getCoins(vsCurrency)
 
-        val url = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=$vsCurrency&order=market_cap_desc&per_page=20&page=1"
-        val request = Request.Builder().url(url).build()
-        val client = OkHttpClient()
-
-        client.newCall(request).enqueue(object: Callback{
-            override fun onFailure(call: Call, e: IOException) {
+                // Esta atualização é segura, pois está no viewModelScope
                 _uiState.value = uiState.value.copy(
                     isLoading = false,
-                    error = e.message
+                    coins = coins
+                )
+            } catch (e: Exception) {
+                // Trata exceções do Repositório (IOException, JSONException)
+                _uiState.value = uiState.value.copy(
+                    isLoading = false,
+                    error = e.message ?: "Erro desconhecido ao carregar moedas"
                 )
             }
-
-            override fun onResponse(call: Call, response: Response) {
-                response.use {
-                    if(!response.isSuccessful){
-                        _uiState.value = uiState.value.copy(
-                            isLoading = false,
-                            error = "Unexpected code $response"
-                        )
-                        return
-                    }
-
-                    val bodyString = response.body?.string()
-
-                    if (bodyString.isNullOrBlank()) {
-                        _uiState.value = _uiState.value.copy(
-                            isLoading = false,
-                            error = "Resposta vazia da API"
-                        )
-                        return
-                    }
-
-                    try {
-                        val jsonArray = JSONArray(bodyString)
-                        val coinsList = ArrayList<Coin>()
-
-                        for (i in 0 until jsonArray.length()) {
-                            val coinJson = jsonArray.getJSONObject(i)
-                            val coin = Coin.fromJson(coinJson)
-                            coinsList.add(coin)
-                        }
-
-                        _uiState.value = _uiState.value.copy(
-                            isLoading = false,
-                            coins = coinsList,
-                            error = null
-                        )
-
-                    } catch (e: Exception) {
-                        _uiState.value = _uiState.value.copy(
-                            isLoading = false,
-                            error = "Erro a processar dados: ${e.message}"
-                        )
-                    }
-                }
-            }
-        })
+        }
     }
 }

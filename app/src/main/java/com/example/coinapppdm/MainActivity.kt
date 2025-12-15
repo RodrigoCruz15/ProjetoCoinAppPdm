@@ -22,9 +22,11 @@ import androidx.compose.runtime.getValue
 import com.google.firebase.auth.auth
 import com.google.firebase.Firebase
 //import com.example.coinapppdm.ui.auth.LoginViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import com.example.coinapppdm.presentation.auth.LoginView
 
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

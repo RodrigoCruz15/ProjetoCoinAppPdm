@@ -130,11 +130,19 @@ fun CoinDetailView(coin: Coin) {
 
                 Spacer(modifier = Modifier.height(12.dp))
 
+                val isSaving = uiState.isSaving
+                val isNoteEmpty = uiState.note.isBlank()
                 Button(
                     onClick = { viewModel.saveNote(coin.id)},
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+
+                    enabled = !isSaving && !isNoteEmpty
                 ){
-                    Text("Guardar nota")
+                    if(isSaving){
+                        CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
+                    }else{
+                        Text("Guardar Nota")
+                    }
                 }
 
                 uiState.error?.let {

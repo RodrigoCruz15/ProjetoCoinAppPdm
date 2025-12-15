@@ -15,7 +15,8 @@ import kotlinx.coroutines.launch
 data class CoinDetailUiState(
     val note: String = "",
     val error: String? = null,
-    val saved: Boolean = false
+    val saved: Boolean = false,
+    val isSaving: Boolean = false
 )
 
 class CoinDetailViewModel @Inject constructor(
